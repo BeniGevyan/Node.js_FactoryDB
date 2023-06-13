@@ -1,27 +1,23 @@
-const JF = require('jsonfile');
 const DEPARTMENTS = require('../model/departments_model');
-const EMPLOYEES = require('../model/employees_model');
-// const { gatEmployeesById } = require('./employeesBLL');
+const mongodb = require('mongodb');
 
-
-//get
 const getAllDepartments = async () => {
     try {
         const departments = await DEPARTMENTS.aggregate([{
             $lookup:
             {
-                from: "Employees",
-                localField: "ManagerId",
+                from: "employees",
+                localField: "manager",
                 foreignField: "_id",
-                as: "Manager"
+                as: "manager"
             }
         }, {
             $lookup:
             {
-                from: "Employees",
-                localField: "Employees_Id",
+                from: "employees",
+                localField: "employees",
                 foreignField: "_id",
-                as: "EmployeesDpar"
+                as: "employees"
             }
         }])
         return departments
@@ -29,29 +25,37 @@ const getAllDepartments = async () => {
         return "Something is wrong, check again"
     }
 }
-//get department by id
-const gatDepartmentsById = async (id) => {
 
+const gatDepartmentsById = async (id) => {
     try {
         console.log('gatDepartmentsById');
-        let department = await DEPARTMENTS.find({ _id: id });
-        // if (department.employees_Id.length ) {
-        //  department = await DEPARTMENTS.find({ _id: id }).aggregate({
-        //     $lookup:
-        //     {
-        //         from: "employees",
-        //         localField: "employees_Id",
-        //         foreignField: "_id",
-        //         as: "employeesdpar"
-        //     }
-        // })
-        // }
+        let department = await DEPARTMENTS.aggregate([
+            { $match: { _id: new mongodb.ObjectId(id) } }
+            , {
+                $lookup:
+                {
+                    from: "employees",
+                    localField: "manager",
+                    foreignField: "_id",
+                    as: "manager"
+                }
+            }, {
+                $lookup:
+                {
+                    from: "employees",
+                    localField: "employees",
+                    foreignField: "_id",
+                    as: "employees"
+                }
+            }
+        ])
+
         return department ? department : "department id does not exist";
 
     } catch (error) {
-        return "Something is wrong, check again"
+        console.error("Something is wrong, check again");
+        return error;
     }
-
 }
 
 //add department
@@ -72,6 +76,7 @@ const addDepartments = async (obj) => {
 const updatedDepartments = async (id, obj) => {
     try {
         console.log("updatedDepartments");
+        console.log(obj);
         await DEPARTMENTS.findByIdAndUpdate(id, obj)
         return "update";
     } catch (error) {

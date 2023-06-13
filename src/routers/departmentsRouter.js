@@ -6,6 +6,7 @@ const DepartmentsRouter = express.Router();
 
 /* get departments */
 DepartmentsRouter.route('/').get(async (req, res) => {
+    console.log("1");
     try {
         const departments = await DEPARTMENTS.getAllDepartments();
         res.json(departments)

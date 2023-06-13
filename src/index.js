@@ -7,8 +7,6 @@ const EmployeesRouter = require('./routers/employeesRouter');
 const ShiftsRouter = require('./routers/shiftRouter');
 const authRouter = require('./routers/authRouter');
 const testToken = require('./middlewares/token');
-const { getAllUsersWsAddDb } = require('./bll/usersBLL.JS');
-const getEmploeeaddDB = require('./getEmploee');
 
 
 connectDB();
@@ -21,8 +19,6 @@ app.use(express.json());
 // app.use('/auth', authRouter)
 
 // app.use(testToken)
-
-app.use('/users', UsersRouter);
 
 app.use('/users', UsersRouter);
 app.use('/departments', DepartmentsRouter);
