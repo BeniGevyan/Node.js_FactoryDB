@@ -11,14 +11,6 @@ const getAllDepartments = async () => {
                 foreignField: "_id",
                 as: "manager"
             }
-        }, {
-            $lookup:
-            {
-                from: "employees",
-                localField: "employees",
-                foreignField: "_id",
-                as: "employees"
-            }
         }])
         return departments
     } catch (error) {
@@ -29,7 +21,7 @@ const getAllDepartments = async () => {
 const gatDepartmentsById = async (id) => {
     try {
         console.log('gatDepartmentsById');
-        let department = await DEPARTMENTS.aggregate([
+        const department = await DEPARTMENTS.aggregate([
             { $match: { _id: new mongodb.ObjectId(id) } }
             , {
                 $lookup:
@@ -38,14 +30,6 @@ const gatDepartmentsById = async (id) => {
                     localField: "manager",
                     foreignField: "_id",
                     as: "manager"
-                }
-            }, {
-                $lookup:
-                {
-                    from: "employees",
-                    localField: "employees",
-                    foreignField: "_id",
-                    as: "employees"
                 }
             }
         ])
@@ -62,11 +46,15 @@ const gatDepartmentsById = async (id) => {
 
 const addDepartments = async (obj) => {
     try {
+        if (!obj.name.trim()) {
+            return "Missing department name ";
+        }
         console.log("addDepartments");
         const dpe = new DEPARTMENTS(obj);
         await dpe.save();
         return 'Created!';
     } catch (error) {
+        console.log(error);
         return "Something is wrong, check again"
     }
 }

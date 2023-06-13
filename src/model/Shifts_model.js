@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const ShiftsSchema = new mongoose.Schema(
     {
-        _id:{type:mongoose.Schema.Types.ObjectId},
         date: String,
         starting_hour: String,
         ending_hour: String,

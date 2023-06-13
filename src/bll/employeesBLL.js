@@ -1,32 +1,20 @@
-const JF = require('jsonfile');
 const EMPLOYEES = require('../model/employees_model');
-const getEmploeeaddDB = require('../getEmploee');
-
+const mongodb = require('mongodb');
 
 //get
 const getAllEmployees = async () => {
     console.log('getAllEmployees');
-    await getEmploeeaddDB()
     try {
-        const employees = await EMPLOYEES.find({})
-        // const employees = await EMPLOYEES.aggregate([{
-        //     $lookup:
-        //     {
-        //         from: "Departments",
-        //         localField: "Department_Id",
-        //         foreignField: "_id",
-        //         as: "Departments"
-        //     }
-        // },{
-        //     $lookup:
-        //     {
-        //         from: "Shifts",
-        //         localField: "Shifts_Id",
-        //         foreignField: "_id",
-        //         as: "Shifts"
-        //     }
-        // }
-        // ])
+        const employees = await EMPLOYEES.aggregate([{
+            $lookup:
+            {
+                from: "departments",
+                localField: "department",
+                foreignField: "_id",
+                as: "department"
+            }
+        }
+        ])
         return employees
     } catch (error) {
         return "Something is wrong, check again"
@@ -34,27 +22,20 @@ const getAllEmployees = async () => {
 }
 //get employee by id
 const gatEmployeesById = async (id) => {
-    console.log('gatEmployeesById');
     try {
-        // const employee = await EMPLOYEES.findById({ _id: id })
-         // const employees = await EMPLOYEES.aggregate([{ _id: id },{
-        //     $lookup:
-        //     {
-        //         from: "Departments",
-        //         localField: "Department_Id",
-        //         foreignField: "_id",
-        //         as: "Departments"
-        //     }
-        // },{
-        //     $lookup:
-        //     {
-        //         from: "Shifts",
-        //         localField: "Shifts_Id",
-        //         foreignField: "_id",
-        //         as: "Shifts"
-        //     }
-        // }
-        // ])
+        console.log('gatEmployeesById');
+        const employee = await EMPLOYEES.aggregate([
+            { $match: { _id: new mongodb.ObjectId(id) } }
+            , {
+                $lookup:
+                {
+                    from: "departments",
+                    localField: "department",
+                    foreignField: "_id",
+                    as: "department"
+                }
+            }
+        ])
         return employee;
     } catch (error) {
         return "Something is wrong, check again"
@@ -67,6 +48,11 @@ const gatEmployeesById = async (id) => {
 const addEmployees = async (obj) => {
     console.log('addEmployees');
     try {
+        if (!obj.firstName.trim()) {
+            if (!obj.lastName.trim()) {
+
+            }
+        }
         const dpe = new EMPLOYEES(obj);
         await dpe.save();
         return 'Created!';
