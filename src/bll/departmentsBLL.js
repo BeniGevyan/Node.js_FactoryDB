@@ -4,6 +4,7 @@ const mongodb = require('mongodb');
 const getAllDepartments = async () => {
     try {
         const departments = await DEPARTMENTS.aggregate([{
+
             $lookup:
             {
                 from: "employees",
@@ -11,7 +12,16 @@ const getAllDepartments = async () => {
                 foreignField: "_id",
                 as: "manager"
             }
-        }])
+        }, {
+            $lookup:
+            {
+                from: "employees",
+                localField: "_id",
+                foreignField: "department",
+                as: "employees"
+            }
+        }
+        ])
         return departments
     } catch (error) {
         return "Something is wrong, check again"
@@ -30,6 +40,14 @@ const gatDepartmentsById = async (id) => {
                     localField: "manager",
                     foreignField: "_id",
                     as: "manager"
+                }
+            }, {
+                $lookup:
+                {
+                    from: "employees",
+                    localField: "_id",
+                    foreignField: "department",
+                    as: "employees"
                 }
             }
         ])

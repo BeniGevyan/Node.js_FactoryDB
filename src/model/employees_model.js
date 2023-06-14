@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 
-
 const employeesSchema = new mongoose.Schema(
     {
-
-        first_name: String,
-        last_name: String,
-        start_work_year: Number,
-        department: {type:mongoose.Schema.Types.ObjectId , ref : 'departments'},
-
+        first_name: { type: String, required: true },
+        last_name: { type: String, required: true },
+        start_work_year: { type: Number, required: true },
+        department: { type: mongoose.Schema.Types.ObjectId, ref: 'departments' },
+        shift: [{ type: mongoose.Schema.Types.ObjectId, ref: 'departments' }]
     },
     { versionKey: false }
 )

@@ -1,12 +1,21 @@
 const JF = require('jsonfile');
-const SHIFT = require('../model/shifts_model')
+const SHIFT = require('../model/shifts_model');
+const { validAddShift } = require('../config/validation');
 
 
 //get
 const getAllShift = async () => {
     try {
         console.log('getAllShift');
-        const shifts = await SHIFT.find({})
+        const shifts = await SHIFT.aggregate([{
+            $lookup:
+            {
+                from: "employees",
+                localField: "employees",
+                foreignField: "_id",
+                as: "employees"
+            }
+        }])
         return shifts
     } catch (error) {
         return "Something is wrong, check again"
@@ -30,9 +39,13 @@ const gatShiftById = async (id) => {
 const addShift = async (obj) => {
     console.log("addShift");
     try {
-        const dpe = new SHIFT(obj);
-        await dpe.save();
-        return 'Created!';
+        const checkShift = validAddShift(obj)
+        if (checkShift) {
+            const dpe = new SHIFT(obj);
+            await dpe.save();
+            return 'Created!';
+        }
+        return checkShift
     } catch (error) {
         return "Something is wrong, check again"
     }
@@ -52,15 +65,15 @@ const updatedShift = async (id, obj) => {
 
 // Delete shift
 
-const deleteShift = async (id) => {
-    console.log('deleteShift');
-    try {
-        await SHIFT.findByIdAndDelete(id)
-        return "Delete";
-    } catch (error) {
-        return "Something is wrong, check again"
-    }
-}
+// const deleteShift = async (id) => {
+//     console.log('deleteShift');
+//     try {
+//         await SHIFT.findByIdAndDelete(id)
+//         return "Delete";
+//     } catch (error) {
+//         return "Something is wrong, check again"
+//     }
+// }
 
 
-module.exports = { getAllShift, gatShiftById, addShift, updatedShift, deleteShift };
+module.exports = { getAllShift, gatShiftById, addShift, updatedShift };

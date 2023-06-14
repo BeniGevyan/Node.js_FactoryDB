@@ -1,3 +1,4 @@
+const { validAddEmploy } = require('../config/validation');
 const EMPLOYEES = require('../model/employees_model');
 const mongodb = require('mongodb');
 
@@ -12,6 +13,14 @@ const getAllEmployees = async () => {
                 localField: "department",
                 foreignField: "_id",
                 as: "department"
+            }
+        }, {
+            $lookup:
+            {
+                from: "shift",
+                localField: "shift",
+                foreignField: "_id",
+                as: "shift"
             }
         }
         ])
@@ -34,6 +43,14 @@ const gatEmployeesById = async (id) => {
                     foreignField: "_id",
                     as: "department"
                 }
+            }, {
+                $lookup:
+                {
+                    from: "shift",
+                    localField: "shift",
+                    foreignField: "_id",
+                    as: "shift"
+                }
             }
         ])
         return employee;
@@ -48,14 +65,14 @@ const gatEmployeesById = async (id) => {
 const addEmployees = async (obj) => {
     console.log('addEmployees');
     try {
-        if (!obj.firstName.trim()) {
-            if (!obj.lastName.trim()) {
-
-            }
+        let checkObj = await validAddEmploy(obj)
+        if (checkObj) {
+            const dpe = new EMPLOYEES(obj);
+            await dpe.save();
+            return 'Created!';
         }
-        const dpe = new EMPLOYEES(obj);
-        await dpe.save();
-        return 'Created!';
+        return checkObj
+
     } catch (error) {
         console.log(error);
         return "Something is wrong, check again"

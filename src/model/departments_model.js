@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 
 const departmentsSchema = new mongoose.Schema(
     {
-        name: String,
-        manager: {type:mongoose.Schema.Types.ObjectId , ref : 'employees'},
+        name: { type: String, required: true },
+        manager: { type: mongoose.Schema.Types.ObjectId, ref: 'employees',required: true },
+       
+
     },
     { versionKey: false }
 )
