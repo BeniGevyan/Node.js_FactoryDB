@@ -1,16 +1,22 @@
 const express = require('express');
 const JWT = require('jsonwebtoken');
-const USERS_DB = require('../model/users_model')
+const USERS_DB = require('../model/users_model');
+const { getUser } = require('../bll/usersBLL.JS');
+const { addUser } = require('../middlewares/permissions');
 
 
 const authRouter = express.Router();
 
 authRouter.route('/').post(async (req, res) => {
-    const { Username, Email } = req.body;
+    
+    const { username, email } = req.body;
+ 
     try {
-        let user = await USERS_DB.find({ "Username": Username });
+        let user = await getUser(username, email);
+        await addUser(user)
         if (user) {
-            if (user[0].Email === Email) {
+        
+            if (user.email === email) {
                 const userId = user.id
                 const ACCESS_SECRET_TOKEN = 'someKey';
                 const accessToken = JWT.sign(
@@ -21,11 +27,11 @@ authRouter.route('/').post(async (req, res) => {
                 res.json({ accessToken });
             }
             res.status(401).json("Invalid login data"); // Unauthorized
-
         }
         res.status(401).json("Invalid login data"); // Unauthorized
     } catch (error) {
-        console.log(error);
+        console.error(error.message);
+        return res.status(412).json(error.message)
     }
 });
 

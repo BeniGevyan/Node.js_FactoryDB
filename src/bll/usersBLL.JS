@@ -36,6 +36,20 @@ const gatUsersByIdDb = async (id) => {
     }
 }
 
+const getUser = async (userName, Email) => {
+    try {
+        let data = await get(`${URL_USERS}/?username=${userName}&email=${Email}`);
+        let { id, name: FullName, username, email, phone } = data.data[0]
+        const obj = { id, FullName, username, email, phone }
+        return obj;
+    } catch (error) {
+        return (error);
+    }
+}
+
+
+
+module.exports = { gatUserByIdWs, addUserDb, gatUsersByIdDb, getUser };
 
 // const updatedPasswordUsersDb = async (username, newPassword) => {
 //     try {
@@ -47,5 +61,3 @@ const gatUsersByIdDb = async (id) => {
 //         return "Something is wrong, check again"
 //     }
 // }
-
-module.exports = {  gatUserByIdWs, addUserDb, gatUsersByIdDb };

@@ -1,6 +1,6 @@
-const JF = require('jsonfile');
 const SHIFT = require('../model/shifts_model');
 const { validAddShift } = require('../config/validation');
+const mongodb = require('mongodb');
 
 
 //get
@@ -11,8 +11,8 @@ const getAllShift = async () => {
             $lookup:
             {
                 from: "employees",
-                localField: "employees",
-                foreignField: "_id",
+                localField: "_id",
+                foreignField: "shift",
                 as: "employees"
             }
         }])
@@ -25,10 +25,22 @@ const getAllShift = async () => {
 //get shift by id
 const gatShiftById = async (id) => {
     try {
-        console.log('gatShiftById');
-        const shift = await SHIFT.find({ _id: id })
+        console.log('gatShiftById 1111');
+
+        const shift = await SHIFT.aggregate([
+            { $match: { _id: new mongodb.ObjectId(id) } }
+            , {
+                $lookup:
+                {
+                    from: "employees",
+                    localField: "_id",
+                    foreignField: "shift",
+                    as: "employees"
+                }
+            }])
         return shift
     } catch (error) {
+        console.log(error);
         return "Something is wrong, check again"
     }
 
@@ -39,15 +51,16 @@ const gatShiftById = async (id) => {
 const addShift = async (obj) => {
     console.log("addShift");
     try {
-        const checkShift = validAddShift(obj)
-        if (checkShift) {
-            const dpe = new SHIFT(obj);
-            await dpe.save();
-            return 'Created!';
-        }
-        return checkShift
+        validAddShift(obj)
+        const shift = new SHIFT(obj);
+        await shift.save();
+        return 'Created!';
+
+        // return checkShift
     } catch (error) {
-        return "Something is wrong, check again"
+        console.error(error.message);
+        return error.message
+
     }
 }
 

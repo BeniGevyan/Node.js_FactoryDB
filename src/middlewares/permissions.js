@@ -6,17 +6,17 @@ const FILE_USERS_ACTIONS = `${__dirname}/../dbJsons/actions.json`
 
 const amountPermissions = async (id) => {
     const actions = await jf.readFile(FILE_USERS_ACTIONS);
-    const employee = actions.action.find((action) => action.id === id);
-    if (employee.maxActions > employee.action.length) {
+    const user = actions.action.find((action) => action.id === id);
+    if (user.maxActions > user.action.length) {
         return true
     }
     return false
 }
 const updatePermissions = async (obj) => {
-    const actions = jf.readFile(FILE_USERS_ACTIONS);
+    let actions = jf.readFile(FILE_USERS_ACTIONS);
     const employee = actions.action.findindex((action) => action.id === obj.id);
     actions[employee].action = [...actions[employee].action, obj.action]
-    await jf.writeFile(FILE_USERS_ACTIONS, OBJ);
+    await jf.writeFile(FILE_USERS_ACTIONS, actions);
     return 'Done!';
 };
 
@@ -28,9 +28,6 @@ const resrch = async () => {
         return {
             id: user.id,
             name: user.name,
-            username: user.username,
-            email: user.email,
-            phone: user.phone,
             maxActions: 5,
             action: []
         }
@@ -43,4 +40,31 @@ const resrch = async () => {
     });
     console.log('den');
 }
-module.exports = {  amountPermissions, updatePermissions, resrch };
+
+const addUser = async (user) => {
+    console.log('getAllUsersWs');
+    const data = {
+        id: user.id,
+        name: user.name,
+        maxActions: 5,
+        action: []
+    }
+    let obj = {
+        "action": [
+        ]
+    }
+    const actions = await jf.readFile(FILE_USERS_ACTIONS);
+    const test = actions.action[0]
+    if (actions.action[0]) {
+        const findId = actions.action.find(peron => peron.id === user.id)
+        if (findId) {
+            throw new Error('User already exists')
+        }
+    }
+    obj.action.push(data)
+
+    await jf.writeFile(FILE_USERS_ACTIONS, obj);
+    console.log('The user is registered');
+}
+
+module.exports = { amountPermissions, updatePermissions, resrch, addUser };

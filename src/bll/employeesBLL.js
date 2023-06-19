@@ -17,7 +17,7 @@ const getAllEmployees = async () => {
         }, {
             $lookup:
             {
-                from: "shift",
+                from: "shifts",
                 localField: "shift",
                 foreignField: "_id",
                 as: "shift"
@@ -33,6 +33,7 @@ const getAllEmployees = async () => {
 const gatEmployeesById = async (id) => {
     try {
         console.log('gatEmployeesById');
+      
         const employee = await EMPLOYEES.aggregate([
             { $match: { _id: new mongodb.ObjectId(id) } }
             , {
@@ -46,7 +47,7 @@ const gatEmployeesById = async (id) => {
             }, {
                 $lookup:
                 {
-                    from: "shift",
+                    from: "shifts",
                     localField: "shift",
                     foreignField: "_id",
                     as: "shift"

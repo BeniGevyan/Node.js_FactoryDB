@@ -55,8 +55,9 @@ const gatDepartmentsById = async (id) => {
         return department ? department : "department id does not exist";
 
     } catch (error) {
-        console.error("Something is wrong, check again");
-        return error;
+        // console.error("Something is wrong, check again");
+        throw new Error("Something is wrong, check again");
+        // return error;
     }
 }
 
