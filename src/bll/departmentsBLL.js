@@ -4,7 +4,6 @@ const mongodb = require('mongodb');
 const getAllDepartments = async () => {
     try {
         const departments = await DEPARTMENTS.aggregate([{
-
             $lookup:
             {
                 from: "employees",
@@ -22,15 +21,15 @@ const getAllDepartments = async () => {
             }
         }
         ])
-        return departments
+        return departments[0] ? departments : "No content exists";
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
 const gatDepartmentsById = async (id) => {
     try {
-        console.log('gatDepartmentsById');
         const department = await DEPARTMENTS.aggregate([
             { $match: { _id: new mongodb.ObjectId(id) } }
             , {
@@ -51,13 +50,10 @@ const gatDepartmentsById = async (id) => {
                 }
             }
         ])
-
-        return department ? department : "department id does not exist";
-
+        return department[0] ? department : "department id does not exist";
     } catch (error) {
-        // console.error("Something is wrong, check again");
-        throw new Error("Something is wrong, check again");
-        // return error;
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
@@ -65,16 +61,15 @@ const gatDepartmentsById = async (id) => {
 
 const addDepartments = async (obj) => {
     try {
-        if (!obj.name.trim()) {
-            return "Missing department name ";
+        if (!obj.name.trim() || !obj.manager.trim()) {
+            return "Missing department name or manger ";
         }
-        console.log("addDepartments");
         const dpe = new DEPARTMENTS(obj);
         await dpe.save();
         return 'Created!';
     } catch (error) {
-        console.log(error);
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
@@ -82,12 +77,14 @@ const addDepartments = async (obj) => {
 
 const updatedDepartments = async (id, obj) => {
     try {
-        console.log("updatedDepartments");
-        console.log(obj);
-        await DEPARTMENTS.findByIdAndUpdate(id, obj)
-        return "update";
+        if (Object.keys(obj).length) {
+            await DEPARTMENTS.findByIdAndUpdate(id, obj)
+            return "update";
+        }
+        return "Missing data"
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
@@ -95,11 +92,16 @@ const updatedDepartments = async (id, obj) => {
 
 const deleteDepartments = async (id) => {
     try {
-        console.log("deleteDepartments");
-        await DEPARTMENTS.findByIdAndDelete(id)
+        if (!(id.length === 24)) { return "Incorrect information" }
+
+        const del = await DEPARTMENTS.findByIdAndDelete(id)
+
+        if (!del) { return "Incorrect information" }
+
         return "Delete";
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 

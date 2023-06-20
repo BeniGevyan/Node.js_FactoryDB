@@ -34,6 +34,7 @@ const validAddShift = (obj) => {
     }
 }
 
+
 const isDateValid = (shiftData) => {
     const data = new Date(shiftData);
     if (!(Date.parse(data))) {

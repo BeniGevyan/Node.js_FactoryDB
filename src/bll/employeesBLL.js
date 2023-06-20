@@ -1,10 +1,11 @@
+const { Types } = require('mongoose');
 const { validAddEmploy } = require('../config/validation');
 const EMPLOYEES = require('../model/employees_model');
 const mongodb = require('mongodb');
 
+
 //get
 const getAllEmployees = async () => {
-    console.log('getAllEmployees');
     try {
         const employees = await EMPLOYEES.aggregate([{
             $lookup:
@@ -24,16 +25,15 @@ const getAllEmployees = async () => {
             }
         }
         ])
-        return employees
+        return employees[0] ? employees : "No content exists"
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 //get employee by id
 const gatEmployeesById = async (id) => {
     try {
-        console.log('gatEmployeesById');
-      
         const employee = await EMPLOYEES.aggregate([
             { $match: { _id: new mongodb.ObjectId(id) } }
             , {
@@ -54,9 +54,10 @@ const gatEmployeesById = async (id) => {
                 }
             }
         ])
-        return employee;
+        return employee[0] ? employee : "employee id does not exist";;
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 
 }
@@ -64,7 +65,6 @@ const gatEmployeesById = async (id) => {
 //add employee
 
 const addEmployees = async (obj) => {
-    console.log('addEmployees');
     try {
         let checkObj = await validAddEmploy(obj)
         if (checkObj) {
@@ -73,10 +73,9 @@ const addEmployees = async (obj) => {
             return 'Created!';
         }
         return checkObj
-
     } catch (error) {
-        console.log(error);
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 
 }
@@ -84,24 +83,32 @@ const addEmployees = async (obj) => {
 // update employee
 
 const updatedEmployees = async (id, obj) => {
-    console.log('updatedEmployees');
+    //צריך לשנות בטבלה של מונגו את שם  שם משפחה ותאריך
+    //לבדוק גם ולידציה 
     try {
-        await EMPLOYEES.findByIdAndUpdate(id, obj)
-        return "update";
+        if (Object.keys(obj).length) {
+            const x = await EMPLOYEES.findByIdAndUpdate(id, obj)
+            console.log(x);
+            return "update";
+        }
+        return "Missing data"
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
 // Delete employee
 
 const deleteEmployees = async (id) => {
-    console.log('deleteEmployees');
     try {
-        await EMPLOYEES.findByIdAndDelete(id)
+        if (!(id.length === 24)) { return "Incorrect information" }
+        const del = await EMPLOYEES.findByIdAndDelete(id)
+        if (!del) { return "Incorrect information" }
         return "Delete ";
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 

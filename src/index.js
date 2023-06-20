@@ -15,17 +15,13 @@ connectDB();
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-// const print = (req) => {
-//     // const { url, method } = req;
-//     console.log(req);
-// }
 app.use(cors());
 app.use(express.json());
 
 app.use('/auth', authRouter)
 
-app.use(testToken)
-
+// app.use(testToken)
+ 
 
 app.use('/users', UsersRouter);
 app.use('/departments', DepartmentsRouter);
@@ -34,10 +30,10 @@ app.use('/shift', ShiftsRouter);
 
 // app.use(print) clear
 
-app.use((err, req, res, next) => {
-    logger(req, res, next)
+// app.use((err, req, res, next) => {
+//     logger(req, res, next)
     
-});
+// });
 
 
 app.listen(PORT, () => console.log(`${PORT} ,server up`));

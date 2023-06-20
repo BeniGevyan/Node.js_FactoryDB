@@ -6,7 +6,6 @@ const mongodb = require('mongodb');
 //get
 const getAllShift = async () => {
     try {
-        console.log('getAllShift');
         const shifts = await SHIFT.aggregate([{
             $lookup:
             {
@@ -16,17 +15,16 @@ const getAllShift = async () => {
                 as: "employees"
             }
         }])
-        return shifts
+        return shifts[0] ? shifts :"No content exists"
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
-
 }
+
 //get shift by id
 const gatShiftById = async (id) => {
     try {
-        console.log('gatShiftById 1111');
-
         const shift = await SHIFT.aggregate([
             { $match: { _id: new mongodb.ObjectId(id) } }
             , {
@@ -40,8 +38,8 @@ const gatShiftById = async (id) => {
             }])
         return shift
     } catch (error) {
-        console.log(error);
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 
 }
@@ -49,30 +47,27 @@ const gatShiftById = async (id) => {
 //add shift
 
 const addShift = async (obj) => {
-    console.log("addShift");
     try {
         validAddShift(obj)
         const shift = new SHIFT(obj);
         await shift.save();
         return 'Created!';
-
-        // return checkShift
     } catch (error) {
-        console.error(error.message);
-        return error.message
-
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 
 // update shift
 
 const updatedShift = async (id, obj) => {
-    console.log('updatedShift');
+   
     try {
         await SHIFT.findByIdAndUpdate(id, obj)
         return "update";
     } catch (error) {
-        return "Something is wrong, check again"
+        error.messages('Something is wrong, check again')
+        return error
     }
 }
 

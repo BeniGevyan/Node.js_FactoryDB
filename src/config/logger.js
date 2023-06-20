@@ -1,7 +1,7 @@
 const { updatePermissions } = require("../middlewares/permissions")
 
 const logger = async (req, res, next) => {
-
+console.log("111111111111");
     if (res.statusCode !== 200) {
         return "false"
     }

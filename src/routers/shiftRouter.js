@@ -8,8 +8,10 @@ ShiftsRouter.route('/').get(async (req, res) => {
     try {
         const shifts = await SHIFT.getAllShift()
         res.json(shifts)
+        return
     } catch (error) {
-        return "Something is wrong, check again"
+        res.status(400).json("Something is wrong, check again")
+        return
     }
 });
 /*get shift b id*/
@@ -18,9 +20,10 @@ ShiftsRouter.route('/:id').get(async (req, res) => {
         const { id } = req.params;
         const shifts = await SHIFT.gatShiftById(id);
         res.json(shifts)
+        return
     } catch (error) {
-        return "Something is wrong, check again"
-
+        res.status(400).json("Something is wrong, check again")
+        return
     }
 });
 
@@ -33,10 +36,10 @@ ShiftsRouter.route('/').post(async (req, res) => {
         console.log(newShifts);
         const result = await SHIFT.addShift(newShifts)
         res.status(200).json(result)
+        return
     } catch (error) {
-        console.log(error)
-        res.status(500);
-
+        res.status(400).json("Something is wrong, check again")
+        return
     }
 });
 
@@ -49,8 +52,10 @@ ShiftsRouter.route('/:id').put(async (req, res) => {
         const newShifts = req.body;
         const result = await SHIFT.updatedShift(id, newShifts)
         res.json(result)
+        return
     } catch (error) {
-        return "Something is wrong, check again"
+        res.status(400).json("Something is wrong, check again")
+        return
     }
 });
 
@@ -62,8 +67,10 @@ ShiftsRouter.route('/:id').delete(async (req, res) => {
         const { id } = req.params;
         const result = await SHIFT.deleteShift(id);
         res.json(result)
+        return
     } catch (error) {
-        return "Something is wrong, check again"
+        res.status(400).json("Something is wrong, check again")
+        return
     }
 });
 
