@@ -14,13 +14,13 @@ const getAllShift = async () => {
                 foreignField: "shift",
                 as: "employees"
             }
-        }])
+        }]);
         return shifts[0] ? shifts :"No content exists"
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 //get shift by id
 const gatShiftById = async (id) => {
@@ -35,41 +35,39 @@ const gatShiftById = async (id) => {
                     foreignField: "shift",
                     as: "employees"
                 }
-            }])
-        return shift
+            }]);
+        return shift;
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 //add shift
 
 const addShift = async (obj) => {
     try {
-        validAddShift(obj)
+        validAddShift(obj);
         const shift = new SHIFT(obj);
         await shift.save();
         return 'Created!';
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 // update shift
 
 const updatedShift = async (id, obj) => {
-   
     try {
-        await SHIFT.findByIdAndUpdate(id, obj)
+        await SHIFT.findByIdAndUpdate(id, obj);
         return "update";
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 // Delete shift
 

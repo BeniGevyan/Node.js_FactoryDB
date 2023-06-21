@@ -1,6 +1,6 @@
 const { get } = require('axios');
 const URL_USERS = 'https://jsonplaceholder.typicode.com/users';
-const USERS_DB = require('../model/users_model')
+const USERS_DB = require('../model/users_model');
 
 
 
@@ -39,13 +39,13 @@ const gatUsersByIdDb = async (id) => {
 const getUserByUsernameEmail = async (userName, Email) => {
     try {
         let data = await get(`${URL_USERS}/?username=${userName}&email=${Email}`);
-        let { id, name: FullName, username, email, phone } = data.data[0]
-        const obj = { id, FullName, username, email, phone }
+        let { id, name: FullName, username, email, phone } = data.data[0];
+        const obj = { id, FullName, username, email, phone };
         return obj;
     } catch (error) {
         return (error);
-    }
-}
+    };
+};
 
 
 

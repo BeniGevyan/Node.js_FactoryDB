@@ -9,6 +9,6 @@ const departmentsSchema = new mongoose.Schema(
 
     },
     { versionKey: false }
-)
-const department = mongoose.model('departments', departmentsSchema)
-module.exports = department
+);
+const department = mongoose.model('departments', departmentsSchema);
+module.exports = department;

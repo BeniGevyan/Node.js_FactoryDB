@@ -20,13 +20,13 @@ const getAllDepartments = async () => {
                 as: "employees"
             }
         }
-        ])
+        ]);
         return departments[0] ? departments : "No content exists";
     } catch (error) {
         error.messages('Something is wrong, check again')
         return error
-    }
-}
+    };
+};
 
 const gatDepartmentsById = async (id) => {
     try {
@@ -49,13 +49,13 @@ const gatDepartmentsById = async (id) => {
                     as: "employees"
                 }
             }
-        ])
+        ]);
         return department[0] ? department : "department id does not exist";
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 //add department
 
@@ -68,42 +68,42 @@ const addDepartments = async (obj) => {
         await dpe.save();
         return 'Created!';
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 // update department
 
 const updatedDepartments = async (id, obj) => {
     try {
         if (Object.keys(obj).length) {
-            await DEPARTMENTS.findByIdAndUpdate(id, obj)
+            await DEPARTMENTS.findByIdAndUpdate(id, obj);
             return "update";
-        }
-        return "Missing data"
+        };
+        return "Missing data";
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 // Delete department
 
 const deleteDepartments = async (id) => {
     try {
-        if (!(id.length === 24)) { return "Incorrect information" }
+        if (!(id.length === 24)) { return "Incorrect information" };
 
-        const del = await DEPARTMENTS.findByIdAndDelete(id)
+        const del = await DEPARTMENTS.findByIdAndDelete(id);
 
-        if (!del) { return "Incorrect information" }
+        if (!del) { return "Incorrect information" };
 
         return "Delete";
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
-    }
-}
+        error.messages('Something is wrong, check again');
+        return error;
+    };
+};
 
 
 module.exports = { getAllDepartments, gatDepartmentsById, addDepartments, updatedDepartments, deleteDepartments };

@@ -13,17 +13,15 @@ const currentDate = new Date();
 const emptyPermissions = {
     "date": { currentDate },
     "action": []
-}
-
+};
 
 const resetPermissions = async () => {
     try {
         let permissions = await jf.readFile(FILE_USERS_ACTIONS);
         if (!permissions) {
             await jf.writeFile(FILE_USERS_ACTIONS, emptyPermissions);
-            return
-        }
-
+            return;
+        };
         const needPermissions = !compareDates(new Date(), new Date(permissions.date));
         if (needPermissions) {
             permissions.date = new Date();
@@ -40,18 +38,18 @@ const amountPermissions = async (id) => {
     const permissions = await jf.readFile(FILE_USERS_ACTIONS);
     const user = permissions.action.find((action) => action.id === id);
     if (user) {
-        addUser(id)
-    }
+        addUser(id);
+    };
     if (user.maxActions > user.action.length) {
-        return true
-    }
-    return false
-}
+        return true;
+    };
+    return false;
+};
 
 const updatePermissions = async (obj) => {
     let permissions = jf.readFile(FILE_USERS_ACTIONS);
     const employee = permissions.action.findindex((action) => action.id === obj.id);
-    permissions[employee].action = [...permissions[employee].action, obj.action]
+    permissions[employee].action = [...permissions[employee].action, obj.action];
     await jf.writeFile(FILE_USERS_ACTIONS, permissions);
     return 'Done!';
 };
@@ -59,7 +57,7 @@ const updatePermissions = async (obj) => {
 
 const resrch = async () => {
 
-    let { data: users } = await get(`${URL_USERS}`)
+    let { data: users } = await get(`${URL_USERS}`);
     users = users.map((user) => {
         return {
             id: user.id,
@@ -67,7 +65,7 @@ const resrch = async () => {
             maxActions: 5,
             action: []
         }
-    })
+    });
 
     await jf.writeFile(FILE, {
         "action": [
@@ -79,26 +77,26 @@ const resrch = async () => {
 
 const CheckExistUser = async (user) => {
     const permissions = await jf.readFile(FILE_USERS_ACTIONS);
-    const test = permissions.action[0]
+    const test = permissions.action[0];
 
     if (permissions.action[0]) {
-        const findId = permissions.action.find(peron => peron.id === user.id)
+        const findId = permissions.action.find(peron => peron.id === user.id);
         if (findId) {
             return 'User already exists'
-        }
-    }
+        };
+    };
 
     const data = {
         id: user.id,
         name: user.name,
         maxActions: 5,
         action: []
-    }
+    };
 
-    permissions.action.push(data)
+    permissions.action.push(data);
 
     await jf.writeFile(FILE_USERS_ACTIONS, permissions);
-}
+};
 
 
 module.exports = { amountPermissions, updatePermissions, resrch, CheckExistUser, resetPermissions };

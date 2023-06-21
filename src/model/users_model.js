@@ -10,6 +10,6 @@ const usersSchema = new mongoose.Schema(
         num_of_actions: Number
     },
     { versionKey: false }
-)
-const user = mongoose.model('users', usersSchema)
-module.exports = user
+);
+const user = mongoose.model('users', usersSchema);
+module.exports = user;

@@ -9,6 +9,6 @@ const employeesSchema = new mongoose.Schema(
         shifts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'departments' }]
     },
     { versionKey: false }
-)
-const employee = mongoose.model('employees', employeesSchema)
-module.exports = employee
+);
+const employee = mongoose.model('employees', employeesSchema);
+module.exports = employee;
