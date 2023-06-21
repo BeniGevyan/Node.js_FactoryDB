@@ -3,7 +3,7 @@ const JWT = require('jsonwebtoken');
 const USERS_DB = require('../model/users_model');
 const { getUserByUsernameEmail } = require('../bll/usersBLL.JS');
 const { CheckExistUser } = require('../middlewares/permissions');
-
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
 
 const authRouter = express.Router();
 
@@ -17,10 +17,9 @@ authRouter.route('/').post(async (req, res) => {
         if (user) {
             if (user.email === email) {
                 const userId = user.id
-                const ACCESS_SECRET_TOKEN = 'someKey';
                 const accessToken = JWT.sign(
                     { id: userId },
-                    ACCESS_SECRET_TOKEN
+                    ACCESS_TOKEN_SECRET
                     // { expiresIn: 7200 } // expires after 7200s (2 hours)
                 );
                 res.json({ accessToken });
