@@ -13,7 +13,8 @@ const { resetPermissions } = require('./middlewares/permissions');
 
 connectDB();
 
-// resetPermissions();
+resetPermissions();
+
 
 const PORT = process.env.PORT || 8000;
 const app = express();

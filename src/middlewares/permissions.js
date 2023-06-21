@@ -5,31 +5,30 @@ const path = require("path");
 const URL_USERS = 'https://jsonplaceholder.typicode.com/users';
 const FILE_USERS_ACTIONS = path.resolve(__dirname + "../../dbJsons/permissions.Json");
 
-const date = new Date()
+const compareDates = (a, b) => a.toDateString() === b.toDateString();
+
+
+const currentDate = new Date();
+
 const emptyPermissions = {
-    "date": { date },
+    "date": { currentDate },
     "action": []
 }
 
 
 const resetPermissions = async () => {
-    console.log('ResetPermissions Start');
     try {
         let permissions = await jf.readFile(FILE_USERS_ACTIONS);
         if (!permissions) {
             await jf.writeFile(FILE_USERS_ACTIONS, emptyPermissions);
-            console.log('ResetPermissions End 1');
             return
         }
-        console.log("1111111", new Date());
-        // console.log("222222", action);
-        if (!(permissions.date === new Date())) {
+
+        const needPermissions = !compareDates(new Date(), new Date(permissions.date));
+        if (needPermissions) {
             permissions.date = new Date();
             permissions.action = [];
-            console.log(permissions);
             await jf.writeFile(FILE_USERS_ACTIONS, permissions);
-            console.log('ResetPermissions End 2');
-            // return
         }
     } catch (error) {
         console.log(error);
