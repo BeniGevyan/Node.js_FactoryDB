@@ -36,7 +36,7 @@ const gatUsersByIdDb = async (id) => {
     }
 }
 
-const getUser = async (userName, Email) => {
+const getUserByUsernameEmail = async (userName, Email) => {
     try {
         let data = await get(`${URL_USERS}/?username=${userName}&email=${Email}`);
         let { id, name: FullName, username, email, phone } = data.data[0]
@@ -49,7 +49,7 @@ const getUser = async (userName, Email) => {
 
 
 
-module.exports = { gatUserByIdWs, addUserDb, gatUsersByIdDb, getUser };
+module.exports = { gatUserByIdWs, addUserDb, gatUsersByIdDb, getUserByUsernameEmail };
 
 // const updatedPasswordUsersDb = async (username, newPassword) => {
 //     try {

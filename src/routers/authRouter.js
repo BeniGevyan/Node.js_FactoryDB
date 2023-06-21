@@ -1,8 +1,8 @@
 const express = require('express');
 const JWT = require('jsonwebtoken');
 const USERS_DB = require('../model/users_model');
-const { getUser } = require('../bll/usersBLL.JS');
-const { addUser } = require('../middlewares/permissions');
+const { getUserByUsernameEmail } = require('../bll/usersBLL.JS');
+const { CheckExistUser } = require('../middlewares/permissions');
 
 
 const authRouter = express.Router();
@@ -12,10 +12,9 @@ authRouter.route('/').post(async (req, res) => {
     const { username, email } = req.body;
  
     try {
-        let user = await getUser(username, email);
-        await addUser(user)
+        let user = await getUserByUsernameEmail(username, email);
+        await CheckExistUser(user)
         if (user) {
-        
             if (user.email === email) {
                 const userId = user.id
                 const ACCESS_SECRET_TOKEN = 'someKey';

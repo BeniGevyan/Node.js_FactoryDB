@@ -1,11 +1,12 @@
+const express = require('express');
 const { updatePermissions } = require("../middlewares/permissions")
 
 const logger = async (req, res, next) => {
-console.log("111111111111");
     if (res.statusCode !== 200) {
         return "false"
     }
     const data = await PreparationInformation(req)
+    console.log(data);
     await updatePermissions(data)
     next()
 }
@@ -18,13 +19,13 @@ const PreparationInformation = async (req) => {
         "action": ''
     }
     const myArray = url.split("/");
-   
+
     if (method === 'GET' && myArray[2]) {
         data.action = ` ${method} ${myArray[1]} by id`
     } else {
         data.action = `${method} ${myArray[1]}`
     }
- 
+
     return data
 
 }
