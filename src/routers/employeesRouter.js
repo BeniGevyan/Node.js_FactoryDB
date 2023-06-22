@@ -1,5 +1,6 @@
 const express = require('express');
 const EMPLOYEES = require('../bll/employeesBLL');
+const logger = require('../config/logger');
 
 const EmployeesRouter = express.Router();
 

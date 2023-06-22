@@ -1,111 +1,11 @@
 {
     "date": "2023-06-22T12:57:05.126Z",
-    "ACTION": [
+    "allActions": [
         {
             "id": 1,
             "name": "Leanne Graham",
             "maxActions": 5,
-            "action": [
-                {
-                    "data": "22/5/2023  16:58",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  16:59",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  17:0",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:2",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:2",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:2",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:2",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:4",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:4",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:5",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:9",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:9",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:13",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:14",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:15",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:15",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:16",
-                    "action": "GET 648893c13965ac7c405240de"
-                },
-                {
-                    "data": "22/5/2023  17:17",
-                    "action": "GET 648893c13965ac7c405240de"
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "name": "Ervin Howell",
-            "maxActions": 5,
-            "action": [
-                {
-                    "data": "22/5/2023  17:18",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  17:18",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  17:19",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  17:19",
-                    "action": "GET "
-                },
-                {
-                    "data": "22/5/2023  17:19",
-                    "action": "GET "
-                }
-            ]
+            "userAction": []
         }
     ]
 }

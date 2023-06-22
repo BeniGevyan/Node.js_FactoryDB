@@ -1,4 +1,3 @@
-const { Types } = require('mongoose');
 const { validAddEmploy } = require('../config/validation');
 const EMPLOYEES = require('../model/employees_model');
 const mongodb = require('mongodb');
@@ -82,8 +81,7 @@ const addEmployees = async (obj) => {
 // update employee
 
 const updatedEmployees = async (id, obj) => {
-    //צריך לשנות בטבלה של מונגו את שם  שם משפחה ותאריך
-    //לבדוק גם ולידציה 
+   
     try {
         if (Object.keys(obj).length) {
             const x = await EMPLOYEES.findByIdAndUpdate(id, obj);

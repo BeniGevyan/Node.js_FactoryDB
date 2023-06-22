@@ -1,5 +1,6 @@
 const express = require('express');
 const SHIFT = require('../bll/shiftBLL');
+const logger = require('../config/logger');
 
 const ShiftsRouter = express.Router();
 

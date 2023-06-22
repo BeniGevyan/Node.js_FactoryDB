@@ -69,17 +69,5 @@ const updatedShift = async (id, obj) => {
     };
 };
 
-// Delete shift
-
-// const deleteShift = async (id) => {
-//     console.log('deleteShift');
-//     try {
-//         await SHIFT.findByIdAndDelete(id)
-//         return "Delete";
-//     } catch (error) {
-//         return "Something is wrong, check again"
-//     }
-// }
-
 
 module.exports = { getAllShift, gatShiftById, addShift, updatedShift };

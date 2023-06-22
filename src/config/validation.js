@@ -1,6 +1,5 @@
 const { Error } = require("mongoose");
 const DEPARTMENTS = require("../model/departments_model");
-const EMPLOYEES = require("../model/employees_model");
 
 const validAddEmploy = async (obj) => {
     if (obj.firstName.trim() && obj.lastName.trim() && isYearValid(obj.start_work_year)) {

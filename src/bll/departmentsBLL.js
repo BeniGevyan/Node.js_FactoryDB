@@ -1,6 +1,7 @@
 const DEPARTMENTS = require('../model/departments_model');
 const mongodb = require('mongodb');
 
+//get All Departments
 const getAllDepartments = async () => {
     try {
         const departments = await DEPARTMENTS.aggregate([{
@@ -23,11 +24,12 @@ const getAllDepartments = async () => {
         ]);
         return departments[0] ? departments : "No content exists";
     } catch (error) {
-        error.messages('Something is wrong, check again')
-        return error
+        error.messages('Something is wrong, check again');
+        return error;
     };
 };
 
+//gat Departments By Id
 const gatDepartmentsById = async (id) => {
     try {
         const department = await DEPARTMENTS.aggregate([
