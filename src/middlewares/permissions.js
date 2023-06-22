@@ -2,6 +2,7 @@ const jf = require('jsonfile');
 const { get } = require('axios');
 const { gatUserByIdWs } = require('../bll/usersBLL.JS');
 const path = require("path");
+const { error } = require('console');
 const URL_USERS = 'https://jsonplaceholder.typicode.com/users';
 const FILE_USERS_ACTIONS = path.resolve(__dirname + "../../dbJsons/permissions.Json");
 
@@ -12,7 +13,7 @@ const currentDate = new Date();
 
 const emptyPermissions = {
     "date": { currentDate },
-    "action": []
+    "ACTION": []
 };
 
 const resetPermissions = async () => {
@@ -24,8 +25,8 @@ const resetPermissions = async () => {
         };
         const needPermissions = !compareDates(new Date(), new Date(permissions.date));
         if (needPermissions) {
-            permissions.date = new Date();
-            permissions.action = [];
+            permissions.ACTION = new Date();
+            permissions.ACTION = [];
             await jf.writeFile(FILE_USERS_ACTIONS, permissions);
         }
     } catch (error) {
@@ -36,51 +37,44 @@ const resetPermissions = async () => {
 
 const amountPermissions = async (id) => {
     const permissions = await jf.readFile(FILE_USERS_ACTIONS);
-    const user = permissions.action.find((action) => action.id === id);
-    if (user) {
-        addUser(id);
-    };
+    const user = permissions.ACTION.find((action) => action.id === id);
+
     if (user.maxActions > user.action.length) {
         return true;
     };
     return false;
 };
 
-const updatePermissions = async (obj) => {
-    let permissions = jf.readFile(FILE_USERS_ACTIONS);
-    const employee = permissions.action.findindex((action) => action.id === obj.id);
-    permissions[employee].action = [...permissions[employee].action, obj.action];
+const updatePermissions = async (userId, obj) => {
+    let permissions = await jf.readFile(FILE_USERS_ACTIONS);
+    const employee = permissions.ACTION.findIndex((action) => action.id === userId);
+    permissions.ACTION[employee].action = [...permissions.ACTION[employee].action, obj];
     await jf.writeFile(FILE_USERS_ACTIONS, permissions);
     return 'Done!';
 };
 
 
-const resrch = async () => {
+// const addUser = async (id) => {
+//     const user = await gatUserByIdWs(id)
+//     const permissions = await jf.readFile(FILE_USERS_ACTIONS);
 
-    let { data: users } = await get(`${URL_USERS}`);
-    users = users.map((user) => {
-        return {
-            id: user.id,
-            name: user.name,
-            maxActions: 5,
-            action: []
-        }
-    });
+//     users = {
+//         id: user.id,
+//         name: user.FullName,
+//         maxActions: 5,
+//         action: []
+//     };
 
-    await jf.writeFile(FILE, {
-        "action": [
-            users
-        ]
-    });
-    console.log('den');
-}
+//     permissions.ACTION.push(users);
+//     await jf.writeFile(FILE_USERS_ACTIONS, permissions);
+// }
 
 const CheckExistUser = async (user) => {
     const permissions = await jf.readFile(FILE_USERS_ACTIONS);
-    const test = permissions.action[0];
+    const test = permissions.ACTION[0];
 
     if (permissions.action[0]) {
-        const findId = permissions.action.find(peron => peron.id === user.id);
+        const findId = permissions.ACTION.find(peron => peron.id === user.id);
         if (findId) {
             return 'User already exists'
         };
@@ -88,15 +82,14 @@ const CheckExistUser = async (user) => {
 
     const data = {
         id: user.id,
-        name: user.name,
+        name: user.FullName,
         maxActions: 5,
         action: []
     };
 
-    permissions.action.push(data);
-
+    permissions.ACTION.push(data);
     await jf.writeFile(FILE_USERS_ACTIONS, permissions);
 };
 
 
-module.exports = { amountPermissions, updatePermissions, resrch, CheckExistUser, resetPermissions };
+module.exports = { amountPermissions, updatePermissions, CheckExistUser, resetPermissions };

@@ -6,9 +6,7 @@ const logger = async (req, res, next) => {
         return "false";
     };
     const data = await PreparationInformation(req);
-    console.log(data);
-    await updatePermissions(data);
-    next();
+    await updatePermissions(req.dataUser, data);
 };
 
 const PreparationInformation = async (req) => {
