@@ -42,6 +42,7 @@ const amountPermissions = async (id) => {
     if (user.maxActions > user.action.length) {
         return true;
     };
+
     return false;
 };
 
